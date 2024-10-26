@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         $schedule->command('users:remove-duplicates')->hourly();
+         $schedule->command('users:remove-duplicates')->everyMinute();
     }
 
     /**

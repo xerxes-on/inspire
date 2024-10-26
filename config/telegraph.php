@@ -17,6 +17,7 @@ return [
     'default_parse_mode' => Telegraph::PARSE_MARKDOWN ,
     'commands' => [
         'start' => \App\Telegram\Handler::class . '@start',
+        'cancel' => \App\Telegram\Handler::class . '@search',
     ],
     /*
      * Sets the handler to be used when Telegraph

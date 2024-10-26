@@ -33,8 +33,7 @@ class Handler extends WebhookHandler
                 Keyboard::make()->buttons([
                     Button::make('Wildberries')->action('branch')->param('store', 'Wildberries'),
                     Button::make('Ozon')->action('branch')->param('store', 'Ozon'),
-                ])
-            )->send();
+                ]))->send();
         $chatId = $response['result']['chat']['id'];
         $pathch = storage_path('app/chat_id.txt');
         file_put_contents($pathch, $chatId);
@@ -49,7 +48,7 @@ class Handler extends WebhookHandler
 
         $pathch = storage_path('app/chat_id.txt');
         $chatId = file_get_contents($pathch);
-        $user = User::where('chat_id',$chatId)->first();
+        $user = User::where('chat_id', $chatId)->first();
         $order = Order::create([
             'user_id' => $user->id,
             'store' => $store,
@@ -64,14 +63,14 @@ class Handler extends WebhookHandler
         $response = Telegraph::chat($this->chat_id())
             ->message('Выберите пункт в меню ')
             ->keyboard(Keyboard::make()->buttons([
-                Button::make('Короб')->action('type')->param('bn', 'Короб')->param('id',$order->id),
-                Button::make('Казань')->action('type')->param('bn', 'Казань')->param('id',$order->id),
-                Button::make('Подольск')->action('type')->param('bn', 'Подольск')->param('id',$order->id),
-                Button::make('Казань 2')->action('type')->param('bn', 'Казань 2')->param('id',$order->id),
-                Button::make('Тула')->action('type')->param('bn', 'Тула')->param('id',$order->id),
-                Button::make('Электросталь')->action('type')->param('bn', 'Электросталь')->param('id',$order->id),
-                Button::make('Коледино')->action('type')->param('bn', 'Коледино')->param('id',$order->id),
-            ]))->send();
+                Button::make('Короб')->action('type')->param('bn', 'Короб')->param('id', $order->id),
+                Button::make('Казань')->action('type')->param('bn', 'Казань')->param('id', $order->id),
+                Button::make('Подольск')->action('type')->param('bn', 'Подольск')->param('id', $order->id),
+                Button::make('Казань 2')->action('type')->param('bn', 'Казань 2')->param('id', $order->id),
+                Button::make('Тула')->action('type')->param('bn', 'Тула')->param('id', $order->id),
+                Button::make('Электросталь')->action('type')->param('bn', 'Электросталь')->param('id', $order->id),
+                Button::make('Коледино')->action('type')->param('bn', 'Коледино')->param('id', $order->id),
+                ]))->send();
 
         $messageId = $response['result']['message_id'];
 
@@ -96,7 +95,7 @@ class Handler extends WebhookHandler
                 Button::make('Короб')->action('coe')->param('type', 'Короб')->param('id', $id),
                 Button::make('Monopolleta')->action('coe')->param('type', 'Monopolleta')->param('id', $id),
                 Button::make('Supersafe')->action('coe')->param('type', 'Supersafe')->param('id', $id),
-            ]))->send();
+                ]))->send();
 
         $messageId = $response['result']['message_id'];
         file_put_contents($path, $messageId);
@@ -112,20 +111,23 @@ class Handler extends WebhookHandler
                 ->deleteMessage($messageId)
                 ->send();
         }
-        $response = Telegraph::chat($this->chat_id()) // Replace with your actual chat or bot context
-        ->message('nextOption2')
+        $response = Telegraph::chat($this->chat_id())
+            ->message('Выберите тип приёмки, на который будем искать слот
+При выборе платной приемки бот будет искать указанный коэффициент или ниже
+Например: Выбрано "До x2" - бот ищет: бесплатную, x1 и x2 приемки')
             ->keyboard(Keyboard::make()->buttons([
                 Button::make('Бесплатная 🆓')->action('time')->param('id', $id)->param('t', 'Бесплатная'),
-                Button::make('до 1x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '1'),
-                Button::make('до 2x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '2'),
-                Button::make('до 3x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '3'),
-                Button::make('до 4x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '4'),
-                Button::make('до 5x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '5'),
-                Button::make('до 6x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '6'),
-                Button::make('до 7x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '7'),
-                Button::make('до 8x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '8'),
-                Button::make('до 9x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '9'),
-                Button::make('до 10x ⬆️')->action('time')->param('t', '10')->param('id', $id),
+                Button::make('до 1x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x1'),
+                Button::make('до 2x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x2'),
+                Button::make('до 3x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x3'),
+                Button::make('до 4x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x4'),
+                Button::make('до 5x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x5'),
+                Button::make('до 6x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x6'),
+                Button::make('до 7x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x7'),
+                Button::make('до 8x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x8'),
+                Button::make('до 9x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x9'),
+                Button::make('до 10x ⬆️')->action('time')->param('t', 'x10')->param('id', $id),
+
             ]))->send();
 
         $messageId = $response['result']['message_id'];
@@ -157,9 +159,10 @@ class Handler extends WebhookHandler
         $messageId = $response['result']['message_id'];
         file_put_contents($path, $messageId);
     }
+
     public function now($id): void
     {
-        $chatId = $this->chat_id();
+        $date = new DateTime();
         $path = storage_path('app/message_id.txt');
         if (file_exists($path)) {
             $messageId = file_get_contents($path);
@@ -167,17 +170,21 @@ class Handler extends WebhookHandler
                 ->deleteMessage($messageId)
                 ->send();
         }
-        Order::where('id', $id)->update(['time' => now()]);
+        Order::where('id', $id)->update(['time' => $date->format('Y-m-d')]);
 
         $response = Telegraph::chat($this->chat_id())
-        ->message('Done 🥳')
+            ->message('Done 🥳')
             ->keyboard(Keyboard::make()->buttons([
                 Button::make('Поиск')->action('search'),
             ]))->send();
         $messageId = $response['result']['message_id'];
     }
+
     public function tmrw($id): void
     {
+        $date = new DateTime();
+        $tomorrow = $date->modify('+1 day')->format('Y-m-d');
+
 
         $path = storage_path('app/message_id.txt');
         if (file_exists($path)) {
@@ -186,7 +193,7 @@ class Handler extends WebhookHandler
                 ->deleteMessage($messageId)
                 ->send();
         }
-        Order::where('id', $id)->update(['time' => now()->addDay()]);
+        Order::where('id', $id)->update(['time' => $tomorrow]);
 
         $response = Telegraph::chat($this->chat_id())
             ->message('Done 🥳')
@@ -195,8 +202,11 @@ class Handler extends WebhookHandler
             ]))->send();
         $messageId = $response['result']['message_id'];
     }
+
     public function week($id): void
     {
+        $date = new DateTime();
+        $week = $date->modify('+1 week')->format('Y-m-d');
 
         $path = storage_path('app/message_id.txt');
         if (file_exists($path)) {
@@ -205,7 +215,7 @@ class Handler extends WebhookHandler
                 ->deleteMessage($messageId)
                 ->send();
         }
-        Order::where('id', $id)->update(['time' => now()->addWeek()]);
+        Order::where('id', $id)->update(['time' => $week]);
 
         $response = Telegraph::chat($this->chat_id())
             ->message('Done 🥳')
@@ -214,6 +224,7 @@ class Handler extends WebhookHandler
             ]))->send();
         $messageId = $response['result']['message_id'];
     }
+
     public function seek($id): void
     {
         Order::where('id', $id)->update(['time' => 'seek']);
@@ -225,6 +236,7 @@ class Handler extends WebhookHandler
             ]))->send();
         $messageId = $response['result']['message_id'];
     }
+
     public function custom($id): void
     {
 
@@ -241,11 +253,13 @@ class Handler extends WebhookHandler
         Telegraph::chat($this->chat_id())
             ->message("Введите дату в формате 'YYYY-MM-DD'. Дата должна быть в пределах от сегодняшнего дня до месяца вперёд.")
             ->send();
+
     }
+
     public function handleChatMessage(Stringable $text): void
     {
 
-        if(!DateTime::createFromFormat('Y-m-d', $text)) {
+        if (!DateTime::createFromFormat('Y-m-d', $text)) {
             Telegraph::chat($this->chat_id())
                 ->sticker(storage_path('app/AnimatedSticker.tgs'))
                 ->send();
@@ -282,12 +296,34 @@ class Handler extends WebhookHandler
 
     }
 
+    public function man(): void
+    {
+        Log::info('Sent message man');
+        Telegraph::chat($this->chat_id())
+            ->message("Лимит найден 🎉\n\nПоставка - Короб, Короб\nДата - 2024-10-26\nПриёмка - x1\nЗабронируйте лимит через личный кабинет WB")
+            ->send();
+        $orders = Order::where('branch', 'Короб')->where('type', 'Короб')
+            ->where('time', '2024-10-26')
+            ->where('coefficient', 'x10')
+            ->get();
+        Log::info('orders', ['orders' => $orders->toArray()]);
 
-//
+    }
+//    public function menu(Telegraph $telegraph): void
+//    {
+//        $telegraph->menu()
+//            ->button('Start')->url('https://t.me/your_bot?start=start')
+//            ->button('Help')->url('https://t.me/your_bot?start=help')
+//            ->send();
+//        Telegraph::setChatMenuButton()->default()->send(); //restore default
+//        Telegraph::setChatMenuButton()->commands()->send(); //show bot commands in menu button
+//        Telegraph::setChatMenuButton()->webApp("Web App", "https://my-web.app")->send(); //show start web app button
+//    }
+
 
     public function handleUnknownCommand(Stringable $text): void
     {
-        if ($text == '/start') {
+        if ($text == '/start' || $text == '/cancel') {
             $response = Telegraph::chat($this->chat_id())
                 ->message("⭐ Я умею автоматически находить и бронировать найденные слоты на складах Wildberries и Ozon.\n
 🟪 На Wildberries я умею находить слоты с бесплатной приёмкой. Или с платной, до подходящего вам платного коэффициента.
@@ -296,11 +332,11 @@ class Handler extends WebhookHandler
                         Button::make('Поиск')->action('search'),
                     ])
                 )->send();
-
             $chat_id = $response['result']['chat']['id'];
-            $name = $response['result']['chat']['first_name'].' '.$response['result']['chat']['last_name'];
+            Telegraph::chat($this->chat_id())->reactWithEmoji($response['result']['message_id']-1, '🤝')->send();
+            $name = $response['result']['chat']['first_name'];
             $userExists = DB::table('users')->where('chat_id', $chat_id)->exists();
-            if(!$userExists){
+            if (!$userExists) {
                 DB::table('users')->insert([
                     'name' => $name,
                     'chat_id' => $chat_id,

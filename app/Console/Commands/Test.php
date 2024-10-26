@@ -55,9 +55,9 @@ class MyEventHandler2 extends SimpleEventHandler
         return ['notifiedChats'];
     }
 
-    public function getReportPeers()
+    public function getReportPeers():array
     {
-        return [self::ADMIN];
+        return [];
     }
 
     public function onStart(): void
@@ -66,83 +66,59 @@ class MyEventHandler2 extends SimpleEventHandler
     }
     public function onUpdateNewMessage(array $update): void
     {
-
         if (isset($update['message']['out']) && $update['message']['out']) {
             return;
         }
-        Log::info('Hello man got a message come in'. $update['message']);
         $message = $update['message'];
-
-        if (isset($message['from_id'])) {
-            Log::info('Hello man got in '.$update['message']);
+        Log::info('Got a message',['message' => $update['message']['from_id']]);
+        if (isset($message['from_id'])){
             $fromId = $message['from_id'];
             $userInfo = $this->getFullInfo($fromId);
-            if (isset($userInfo['User']['username']) &&
-                $userInfo['User']['username'] === 'Qwergybot') {
+            Log::info('Got a message from a user ', ['user_info'=>$userInfo]);
+            if ($userInfo['User']['username'] == 'Qwergybot' && $userInfo['User']['bot']) {
+                Log::info('Goat a message from the  bot');
                 $text = $message['message'];
                 if ($this->isMessageInFormat($text)) {
                     $parsedData = $this->parseMessage($text);
+                    Log::info('Correct formatted message got.',['parced data'=>$this->parseMessage($text)]);
                     if ($parsedData) {
                         $orders = Order::where('branch', $parsedData['branch'])
                             ->where('type', $parsedData['type'])
-                            ->where('date', $parsedData['date'])
+                            ->where('time', $parsedData['time'])
                             ->where('coefficient', $parsedData['coefficient'])
                             ->get();
-
-                        // Process the orders as needed
+                        Log::info('Orders found.',['orders'=>$orders]);
                         foreach ($orders as $order) {
                             $user = $order->user;
                             if ($user && $user->chat_id) {
-                                $message = "Лимит найден 🎉\n
-                                Поставка - {$parsedData['branch']}, {$parsedData['type']}\n
-                                Дата - {$parsedData['date']}\n
-                                Приёмка - {$parsedData['coefficient']}";
-                                Log::info('Sent this '.$message.'to'.$user->chat_id);
-                                try {
+                                $message = "Лимит найден 🎉\n\nПоставка - {$parsedData['branch']}, {$parsedData['type']}\nДата - {$parsedData['time']}\nПриёмка - {$parsedData['coefficient']}";
+                                Log::info('Sent this '. $message .'to User');
                                     Telegraph::chat($user->chat_id)
                                         ->message($message)
                                         ->send();
-                                    Log::info('Message sent to user.', ['user_id' => $user->id]);
-                                } catch (\Exception $e) {
-                                    Log::error('Failed to send message to user.', [
-                                        'user_id' => $user->id,
-                                        'error' => $e->getMessage(),
-                                    ]);
-                                }
                             } else {
                                 Log::warning('User or chat_id not found for order.', ['order_id' => $order->id]);
-                                // Handle the case where user or chat_id is missing
                             }
                         }
-                    } else {
-                        // The message didn't match the expected format
-                        Log::warning('Failed to parse message.', ['message' => $text]);
+                    }else {
+                        Log::warning("parsing error");
                     }
                 }
             }
-        }else {
-            Log::info("Message doesn't match the expected format.", ['message' =>$message ]);
         }
     }
     private function parseMessage(string $text): ?array
     {
         // Regular expression to extract data
-        $pattern = '/Лимит найден 🎉\n\nПоставка - (.*?), (.*?)\nДата - (.*?)\nПриёмка - (.*?)\n\nЗабронируйте лимит через личный кабинет WB/u';
-
+        $pattern = '/Лимит найден 🎉\n\nПоставка - (.*?), (.*?)\nДата - (.*?)\nПриёмка - (.*?)\nЗабронируйте лимит через личный кабинет WB/u';
         if (preg_match($pattern, $text, $matches)) {
-            // $matches[1] - branch
-            // $matches[2] - type
-            // $matches[3] - date
-            // $matches[4] - coeff
-
             return [
                 'branch' => trim($matches[1]),
                 'type' => trim($matches[2]),
-                'date' => trim($matches[3]),
+                'time' => trim($matches[3]),
                 'coefficient' => trim($matches[4]),
             ];
         }
-
         return null;
     }
     private function isMessageInFormat(string $text): bool

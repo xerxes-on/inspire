@@ -32,7 +32,6 @@ class Handler extends WebhookHandler
             ->keyboard(
                 Keyboard::make()->buttons([
                     Button::make('Wildberries')->action('branch')->param('store', 'Wildberries'),
-                    Button::make('Ozon')->action('branch')->param('store', 'Ozon'),
                 ]))->send();
         $chatId = $response['result']['chat']['id'];
         $pathch = storage_path('app/chat_id.txt');
@@ -63,10 +62,11 @@ class Handler extends WebhookHandler
         $response = Telegraph::chat($this->chat_id())
             ->message('Выберите пункт в меню ')
             ->keyboard(Keyboard::make()->buttons([
-                Button::make('Короб')->action('type')->param('bn', 'Короб')->param('id', $order->id),
                 Button::make('Казань')->action('type')->param('bn', 'Казань')->param('id', $order->id),
-                Button::make('Подольск')->action('type')->param('bn', 'Подольск')->param('id', $order->id),
                 Button::make('Казань 2')->action('type')->param('bn', 'Казань 2')->param('id', $order->id),
+                Button::make('Подольск')->action('type')->param('bn', 'Подольск')->param('id', $order->id),
+                Button::make('Подольск 3')->action('type')->param('bn', 'Подольск 3')->param('id', $order->id),
+                Button::make('Подольск 4')->action('type')->param('bn', 'Подольск 4')->param('id', $order->id),
                 Button::make('Тула')->action('type')->param('bn', 'Тула')->param('id', $order->id),
                 Button::make('Электросталь')->action('type')->param('bn', 'Электросталь')->param('id', $order->id),
                 Button::make('Коледино')->action('type')->param('bn', 'Коледино')->param('id', $order->id),
@@ -93,8 +93,8 @@ class Handler extends WebhookHandler
         ->message('Выберите пункт в меню')
             ->keyboard(Keyboard::make()->buttons([
                 Button::make('Короб')->action('coe')->param('type', 'Короб')->param('id', $id),
-                Button::make('Monopolleta')->action('coe')->param('type', 'Monopolleta')->param('id', $id),
-                Button::make('Supersafe')->action('coe')->param('type', 'Supersafe')->param('id', $id),
+                Button::make('Монопаллета')->action('coe')->param('type', 'Монопаллета')->param('id', $id),
+                Button::make('Суперсейф')->action('coe')->param('type', 'Суперсейф')->param('id', $id),
                 ]))->send();
 
         $messageId = $response['result']['message_id'];
@@ -151,9 +151,8 @@ class Handler extends WebhookHandler
                 Button::make('Сегодня')->action('now')->param('id', $id),
                 Button::make('Завтра')->action('tmrw')->param('id', $id),
                 Button::make('Неделя (выключая сегодня)')->action('week')->param('id', $id),
-                Button::make('Искать пока не найдется')->action('seek')->param('id', $id),
+                Button::make('Искать, пока не найдется')->action('Искать всегда')->param('id', $id),
                 Button::make('Вести даты самостоятельно')->action('custom')->param('id', $id),
-
             ]))->send();
 
         $messageId = $response['result']['message_id'];
@@ -258,7 +257,6 @@ class Handler extends WebhookHandler
 
     public function handleChatMessage(Stringable $text): void
     {
-
         if (!DateTime::createFromFormat('Y-m-d', $text)) {
             Telegraph::chat($this->chat_id())
                 ->sticker(storage_path('app/AnimatedSticker.tgs'))
@@ -325,7 +323,7 @@ class Handler extends WebhookHandler
     {
         if ($text == '/start' || $text == '/cancel') {
             $response = Telegraph::chat($this->chat_id())
-                ->message("⭐ Я умею автоматически находить и бронировать найденные слоты на складах Wildberries и Ozon.\n
+                ->message("⭐ Я умею автоматически находить и бронировать найденные слоты на складах Wildberries.\n
 🟪 На Wildberries я умею находить слоты с бесплатной приёмкой. Или с платной, до подходящего вам платного коэффициента.
             ")->keyboard(
                     Keyboard::make()->buttons([

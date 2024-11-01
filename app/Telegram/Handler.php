@@ -117,16 +117,16 @@ class Handler extends WebhookHandler
 Например: Выбрано "До x2" - бот ищет: бесплатную, x1 и x2 приемки')
             ->keyboard(Keyboard::make()->buttons([
                 Button::make('Бесплатная 🆓')->action('time')->param('id', $id)->param('t', 'Бесплатная'),
-                Button::make('до 1x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x1'),
-                Button::make('до 2x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x2'),
-                Button::make('до 3x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x3'),
-                Button::make('до 4x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x4'),
-                Button::make('до 5x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x5'),
-                Button::make('до 6x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x6'),
-                Button::make('до 7x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x7'),
-                Button::make('до 8x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x8'),
-                Button::make('до 9x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', 'x9'),
-                Button::make('до 10x ⬆️')->action('time')->param('t', 'x10')->param('id', $id),
+                Button::make('до 1x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '1'),
+                Button::make('до 2x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '2'),
+                Button::make('до 3x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '3'),
+                Button::make('до 4x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '4'),
+                Button::make('до 5x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '5'),
+                Button::make('до 6x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '6'),
+                Button::make('до 7x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '7'),
+                Button::make('до 8x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '8'),
+                Button::make('до 9x ⬆️')->action('time')->width(0.33)->param('id', $id)->param('t', '9'),
+                Button::make('до 10x ⬆️')->action('time')->param('t', '10')->param('id', $id),
 
             ]))->send();
 

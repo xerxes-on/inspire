@@ -65,6 +65,7 @@ class Handler extends WebhookHandler
                 Button::make('Казань')->action('type')->param('bn', 'Казань')->param('id', $order->id),
                 Button::make('Казань 2')->action('type')->param('bn', 'Казань 2')->param('id', $order->id),
                 Button::make('Подольск')->action('type')->param('bn', 'Подольск')->param('id', $order->id),
+                Button::make('Подольск 2')->action('type')->param('bn', 'Подольск 2')->param('id', $order->id),
                 Button::make('Подольск 3')->action('type')->param('bn', 'Подольск 3')->param('id', $order->id),
                 Button::make('Подольск 4')->action('type')->param('bn', 'Подольск 4')->param('id', $order->id),
                 Button::make('Тула')->action('type')->param('bn', 'Тула')->param('id', $order->id),

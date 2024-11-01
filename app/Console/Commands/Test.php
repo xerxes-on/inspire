@@ -175,22 +175,19 @@ class MyEventHandler2 extends SimpleEventHandler
         }
 
         $message = $update['message'];
-        Log::info('Got a message', ['message' => $update['message']['from_id']]);
-
         if (isset($message['from_id'])) {
             $fromId = $message['from_id'];
             $userInfo = $this->getFullInfo($fromId);
-            Log::info('Got a message from a user ', ['user_info' => $userInfo]);
-
             if ($userInfo['User']['username'] == 'NotifyTBot' && $userInfo['User']['bot']) {
-                Log::info('Got a message from the bot');
+                Log::warning('Got a message from the bot');
                 $text = $message['message'];
-
                 if ($this->isMessageInFormat($text)) {
                     $this->processFirstTypeMessage($text);
                 } else {
                     if ($this->checking_again($text)) {
                         $this->processSecondTypeMessage($text);
+                    }else{
+                        Log::critical('Message didnt match any form 😔');
                     }
                 }
             }
